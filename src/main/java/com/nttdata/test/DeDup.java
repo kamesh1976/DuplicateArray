@@ -3,7 +3,6 @@ package com.nttdata.test;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * This class is used to remove Duplicate from the given Integer array.
@@ -24,6 +23,7 @@ public class DeDup {
 			8, 15, 6, 2, 5, 10, 14, 12, 13, 7, 8, 9, 1, 2, 15, 12, 18, 10, 14, 20, 17, 16, 3, 6, 19, 13, 5, 11, 4, 7, 19, 16, 5, 9, 12, 3,
 			20, 7, 15, 17, 10, 6, 1, 8, 18, 4, 14, 13, 2, 11 };
 
+	
 	/**
 	 * This method used to remove duplicate from the input {@link Integer} arr.
 	 * It uses the HashSet class approach. While converting HashSet it remove
@@ -34,8 +34,12 @@ public class DeDup {
 	 *            object of {@link Integer}
 	 * @return {@link Integer} array object with removed duplicate elements.
 	 */
-	public synchronized Integer[] removeDuplicates(Integer[] arr) {
-		return new HashSet<Integer>(Arrays.asList(arr)).toArray(new Integer[0]);
+	public Integer[] removeDuplicates(Integer[] arr) {
+		Integer[] removedDuplicate = null;
+		synchronized (this) {
+			removedDuplicate = new HashSet<Integer>(Arrays.asList(arr)).toArray(new Integer[0]);
+		}
+		return removedDuplicate;
 	}
 
 	/**
@@ -48,19 +52,12 @@ public class DeDup {
 	 *            object of {@link Integer}
 	 * @return int array object with removed duplicate elements.
 	 */
-	public int[] removeDuplicatesByOriginalOrder(Integer[] arr) {
-		Set<Integer> alreadyPresent = new LinkedHashSet<Integer>();
-		int[] whitelist = new int[arr.length];
-		int i = 0;
-
-		for (Integer element : arr) {
-			synchronized (this) {
-				if (alreadyPresent.add(element)) {
-					whitelist[i++] = element;
-				}
-			}
+	public Integer[] removeDuplicatesByOriginalOrder(Integer[] arr) {
+		Integer[] removedDuplicateOrderWise = null;
+		synchronized (this) {
+			removedDuplicateOrderWise = new LinkedHashSet<Integer>(Arrays.asList(arr)).toArray(new Integer[0]);
 		}
-		return Arrays.copyOf(whitelist, i);
+		return removedDuplicateOrderWise;
 	}
 
 	/**
@@ -78,7 +75,7 @@ public class DeDup {
 	 */
 	public Integer[] removeDuplicated(Integer[] arr, boolean isMaintainOrder) {
 		if (isMaintainOrder) {
-			return toObject(removeDuplicatesByOriginalOrder(arr));
+			return removeDuplicatesByOriginalOrder(arr);
 		} else {
 			return removeDuplicates(arr);
 		}
