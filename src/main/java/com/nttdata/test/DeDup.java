@@ -111,40 +111,13 @@ public class DeDup {
      *            Collections of {@link Set} {@link Integer}
      * @return result Array of {@link Integer} object
      */
-    public Integer[] fromSetsToIntegerArray( Set<Integer> setsInteger ) {
+    public synchronized Integer[] fromSetsToIntegerArray( Set<Integer> setsInteger ) {
         Integer[] result = new Integer[setsInteger.size()];
         int count = 0;
         for (Integer integer : setsInteger) {
             result[count++] = integer;
         }
         return result;
-    }
-
-    /**
-     * Util method to convert from {@link Integer} to int[] objects.
-     * 
-     * @param intArray
-     *            {@link Integer} array object
-     * @return int[] objects
-     */
-    private static Integer[] toObject( int[] intArray ) {
-
-        Integer[] result = new Integer[intArray.length];
-        for (int i = 0; i < intArray.length; i++) {
-            result[i] = Integer.valueOf(intArray[i]);
-        }
-        return result;
-
-    }
-
-    public static void main( String[] args ) {
-        DeDup deDup = new DeDup();
-
-        int[] result = deDup.removeDuplicateWithoutCollection(toObject(deDup.randomIntegers));
-        for (int i : result) {
-            System.out.print(i + " ,");
-        }
-
     }
 
 }
